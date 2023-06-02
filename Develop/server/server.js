@@ -13,6 +13,8 @@ const server = new ApolloServer({
   resolvers
 });
 
+// console.log("Apollo Server: ", server);
+
 const app = express();
 const PORT = process.env.PORT || 3001;
 
@@ -24,12 +26,19 @@ if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '../client/build')));
 }
 
+app.get('/', (req, res) => {
+  console.log("running in development mode...");
+  res.sendFile(path.join(__dirname, '../client/'));
+});
+
 // Create a new instance of an Apollo server with the GraphQL schema
 const startApolloServer = async () => {
   await server.start();
+  console.log("Server started...");
   server.applyMiddleware({ app });
   
   db.once('open', () => {
+    console.log("MongoDB database connection established successfully")
     app.listen(PORT, () => {
       console.log(`API server running on port ${PORT}!`);
       console.log(`Use GraphQL at http://localhost:${PORT}${server.graphqlPath}`);
