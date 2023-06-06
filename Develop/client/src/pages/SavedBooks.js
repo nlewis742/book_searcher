@@ -9,7 +9,7 @@ import {
 import { useQuery, useMutation } from '@apollo/client';
 import { GET_ME } from '../utils/queries';
 import { REMOVE_BOOK } from '../utils/mutations';
-import { getMe, deleteBook } from '../utils/API';
+// import { getMe, deleteBook } from '../utils/API';
 import Auth from '../utils/auth';
 import { removeBookId } from '../utils/localStorage';
 
@@ -20,19 +20,17 @@ const SavedBooks = () => {
  // const userDataLength = Object.keys(userData).length;
 
   // these are both ASYNC functions
-  const { loading, data, error } = useQuery(GET_ME);
-  const [removeBook, { bookError }] = useMutation(REMOVE_BOOK);
+  const { loading, data } = useQuery(GET_ME);
+  const [removeBook, { error }] = useMutation(REMOVE_BOOK);
 
 
   console.log("Loading: ", loading);   // starts out as true
   console.log("Data: ", data);        // starts out as undefined
   console.log("Error: ", error);      // starts out as undefined
   // our user data is coming from our QUERY
-  const userData = data?.me || {};
+  const books = data?.me.savedBooks || {};
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+ 
 
 
  /* useEffect(() => {
@@ -76,7 +74,7 @@ const SavedBooks = () => {
       const { data } = await removeBook({
         variables: { bookId },
       });
-
+    
       console.log("Delete Book Data: ", data);
 
    /*   if (!response.ok) {
@@ -88,11 +86,16 @@ const SavedBooks = () => {
     //  setUserData(updatedUser);
 
       // upon success, remove book's id from localStorage
+
       removeBookId(bookId);
     } catch (err) {
       console.error(err);
     }
   };
+    if (loading) {
+      return <div>Loading...</div>;
+    }
+  
 
   // if data isn't here yet, say so
  /* if (!userDataLength) {
@@ -109,8 +112,8 @@ const SavedBooks = () => {
       </div>
       <Container>
         <h2 className='pt-5'>
-          {userData.savedBooks.length
-            ? `Viewing ${userData.savedBooks.length} saved ${userData.savedBooks.length === 1 ? 'book' : 'books'}:`
+          {books.length
+            ? `Viewing ${books.length} saved ${books.length === 1 ? 'book' : 'books'}:`
             : 'You have no saved books!'}
         </h2>
         <Row>

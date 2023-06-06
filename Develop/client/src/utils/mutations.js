@@ -5,28 +5,68 @@ export const LOGIN_USER = gql`
         login(email: $email, password: $password){
             token
             user {
-                _id
-                username
+              email
             }
         }
     }
 `;
 
-//export const ADD_USER = gql``;
+export const ADD_USER = gql`
+    mutation addUser($username: String!, $email: String!, $password: String!) {
+        addUser(username: $username, email: $email, password: $password){
+            token
+            user {
+                email
+                bookCount
+                savedBooks {
+                    bookId
+                    authors
+                    description
+                    title
+                    image
+                    link
+                }
+            }
+        }
+    }
+`;
 
 
-//export const SAVE_BOOK = gql``;
 
-export const REMOVE_BOOK = gql`
-    mutation removeBook($bookId: String!) {
-        removeBook(bookId: $bookId) {
+export const SAVE_BOOK = gql`
+    mutation saveBook($bookData: BookInput!) {
+        saveBook(bookData: $bookData) {
             _id
             username
             email
             bookCount
             savedBooks {
-                _id
+                bookId 
+                authors
+                description
+                title
+                image
+                link
+            }
+        }
+    }
+
+            `;
+
+export const REMOVE_BOOK = gql`
+    mutation removeBook($bookId: ID!) {
+        removeBook(bookId: $bookId) {
+            _id
+            bookCount
+            savedBooks {
+                bookId
+                authors
+                description
+                title
+                image
+                link
                     
             }
         }
+    }
 `;
