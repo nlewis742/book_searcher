@@ -33,7 +33,7 @@ const SavedBooks = () => {
  
 
 
- /* useEffect(() => {
+useEffect(() => {
     const getUserData = async () => {
       try {
         const token = Auth.loggedIn() ? Auth.getToken() : null;
@@ -58,7 +58,7 @@ const SavedBooks = () => {
     getUserData();
   }, [userDataLength]);
 
-*/  
+
 
   // create function that accepts the book's mongo _id value as param and deletes the book from the database
   const handleDeleteBook = async (bookId) => {
@@ -77,13 +77,13 @@ const SavedBooks = () => {
     
       console.log("Delete Book Data: ", data);
 
-   /*   if (!response.ok) {
+      if (!response.ok) {
         throw new Error('something went wrong!');
       }
-    */
+    
 
-    //  const updatedUser = await response.json();
-    //  setUserData(updatedUser);
+     const updatedUser = await response.json();
+     setUserData(updatedUser);
 
       // upon success, remove book's id from localStorage
 
@@ -98,10 +98,10 @@ const SavedBooks = () => {
   
 
   // if data isn't here yet, say so
- /* if (!userDataLength) {
+  if (!userDataLength) {
     return <h2>LOADING...</h2>;
   }
-  */
+  
 
   return (
     <>
