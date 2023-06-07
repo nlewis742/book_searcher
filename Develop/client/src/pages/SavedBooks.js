@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import {
   Container,
   Card,
@@ -10,8 +10,10 @@ import { useQuery, useMutation } from '@apollo/client';
 import { GET_ME } from '../utils/queries';
 import { REMOVE_BOOK } from '../utils/mutations';
 // import { getMe, deleteBook } from '../utils/API';
-import Auth from '../utils/auth';
+
 import { removeBookId } from '../utils/localStorage';
+
+import Auth from '../utils/auth';
 
 const SavedBooks = () => {
  // const [userData, setUserData] = useState({});
@@ -20,7 +22,7 @@ const SavedBooks = () => {
  // const userDataLength = Object.keys(userData).length;
 
   // these are both ASYNC functions
-  const { loading, data } = useQuery(GET_ME);
+  const { loading, data } = useQuery(QUERY_ME);
   const [removeBook, { error }] = useMutation(REMOVE_BOOK);
 
 
@@ -28,12 +30,12 @@ const SavedBooks = () => {
   console.log("Data: ", data);        // starts out as undefined
   console.log("Error: ", error);      // starts out as undefined
   // our user data is coming from our QUERY
-  const books = data?.me.savedBooks || {};
+ const userData = data?.me || {};
 
  
 
 
-useEffect(() => {
+ /* useEffect(() => {
     const getUserData = async () => {
       try {
         const token = Auth.loggedIn() ? Auth.getToken() : null;
@@ -58,6 +60,8 @@ useEffect(() => {
     getUserData();
   }, [userDataLength]);
 
+*/  
+
 
 
   // create function that accepts the book's mongo _id value as param and deletes the book from the database
@@ -77,13 +81,13 @@ useEffect(() => {
     
       console.log("Delete Book Data: ", data);
 
-      if (!response.ok) {
+   /*   if (!response.ok) {
         throw new Error('something went wrong!');
       }
-    
+    */
 
-     const updatedUser = await response.json();
-     setUserData(updatedUser);
+    //  const updatedUser = await response.json();
+    //  setUserData(updatedUser);
 
       // upon success, remove book's id from localStorage
 
@@ -98,10 +102,10 @@ useEffect(() => {
   
 
   // if data isn't here yet, say so
-  if (!userDataLength) {
+ /* if (!userDataLength) {
     return <h2>LOADING...</h2>;
   }
-  
+  */
 
   return (
     <>
@@ -112,12 +116,12 @@ useEffect(() => {
       </div>
       <Container>
         <h2 className='pt-5'>
-          {books.length
-            ? `Viewing ${books.length} saved ${books.length === 1 ? 'book' : 'books'}:`
+          {userData.SavedBooks.length
+            ? `Viewing ${userData.SavedBooks.length} saved ${userData.SavedBooks.length === 1 ? 'book' : 'books'}:`
             : 'You have no saved books!'}
         </h2>
         <Row>
-          {userData.savedBooks.map((book) => {
+          {userData.SavedBooks.map((book) => {
             return (
               <Col md="4">
                 <Card key={book.bookId} border='dark'>
